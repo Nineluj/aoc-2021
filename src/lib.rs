@@ -27,3 +27,7 @@ pub fn to_num_arr(input: String) -> Vec<i32> {
         line.parse::<i32>().unwrap()
     }).collect::<Vec<i32>>()
 }
+
+pub fn bin_string_to_i32(input: &str) -> i32 {
+    isize::from_str_radix(&input, 2).unwrap() as i32
+}
