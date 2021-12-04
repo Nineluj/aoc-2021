@@ -73,6 +73,9 @@ fn get_boards(lines: Vec<&str>) -> Vec<BingoBoard> {
     boards
 }
 
+// Read the input containing a list of drawn numbers and bingo boards
+// and find the sum of the uncrossed numbers multiplied by the number drawn
+// to get a winning board
 pub fn part1(input: String) {
     let lines = input.split("\n").collect::<Vec<_>>();
     let feed = to_num_arr_with_split(lines[0].to_string(), ',');
@@ -90,6 +93,8 @@ pub fn part1(input: String) {
     }
 }
 
+// Same as part one but print the results for the last bingo board
+// to win the game
 pub fn part2(input: String) {
     let lines = input.split("\n").collect::<Vec<_>>();
     let feed = to_num_arr_with_split(lines[0].to_string(), ',');
