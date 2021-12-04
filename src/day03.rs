@@ -95,7 +95,7 @@ pub fn part2(input: String) {
     for ii in 0..bin_len {
         let (g, _) = get_gamma_epsilon(&candidates);
         let expected = g.get(ii);
-        candidates = candidates.into_iter().filter(|b| b.get(ii) == expected).collect();
+        candidates.retain(|b| b.get(ii) == expected);
 
         if candidates.len() == 1 {
             break;
@@ -109,7 +109,7 @@ pub fn part2(input: String) {
     for ii in 0..bin_len {
         let (_, e) = get_gamma_epsilon(&candidates);
         let expected = e.get(ii);
-        candidates = candidates.into_iter().filter(|b| b.get(ii) == expected).collect();
+        candidates.retain(|b| b.get(ii) == expected);
 
         if candidates.len() == 1 {
             break;
