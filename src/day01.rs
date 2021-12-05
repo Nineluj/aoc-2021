@@ -16,13 +16,13 @@ fn increasing_count(data: Vec<i32>) -> i32 {
 }
 
 pub fn part1(input: String) {
-    let data = to_num_arr(input);
+    let data = to_num_arr(&input);
     let depth_incr_count = increasing_count(data);
     println!("{}", depth_incr_count)
 }
 
 pub fn part2(input: String) {
-    let data = to_num_arr(input);
+    let data = to_num_arr(&input);
     assert!(data.len() >= 3);
 
     let mut new_vec = Vec::<i32>::new();

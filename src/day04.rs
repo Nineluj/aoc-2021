@@ -1,6 +1,6 @@
 use crate::to_num_arr_with_split;
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Copy, Clone)]
 struct BingoNumber {
     num: i32,
     is_crossed: bool,
@@ -12,10 +12,10 @@ struct BingoBoard {
 }
 
 impl BingoBoard {
-    fn new(raw: Vec<&str>) -> BingoBoard {
+    fn new(raw: &[&str]) -> BingoBoard {
         BingoBoard {
             data: raw.iter().fold(Vec::new(), |mut acc, item| {
-                to_num_arr_with_split(item.to_string(), ' ').into_iter().for_each(|ele| {
+                to_num_arr_with_split(item, ' ').into_iter().for_each(|ele| {
                     acc.push(BingoNumber {num: ele, is_crossed: false});
                 });
                 acc
@@ -23,15 +23,15 @@ impl BingoBoard {
         }
     }
 
-    fn get_cell(&self, x: usize, y: usize) -> &BingoNumber {
-        &self.data[x + 5 * y]
+    fn get_cell(&self, x: usize, y: usize) -> BingoNumber {
+        self.data[x + 5 * y]
     }
 
-    fn check_win(&self, init_x: i32, init_y: i32, x_step: i32, y_step: i32) -> bool {
+    fn check_win(&self, init_x: usize, init_y: usize, x_step: usize, y_step: usize) -> bool {
         let mut x = init_x;
         let mut y = init_y;
         while x < 5 && y < 5 {
-            if !self.get_cell(x as usize, y as usize).is_crossed {
+            if !self.get_cell(x, y).is_crossed {
                 return false
             }
             x += x_step;
@@ -47,8 +47,7 @@ impl BingoBoard {
                 return true
             }
         }
-        // both diagonals
-        return self.check_win(0, 0, 1, 1) || self.check_win(0, 4, 0, -1)
+        false
     }
 
     fn mark(&mut self, num: i32) {
@@ -63,11 +62,11 @@ impl BingoBoard {
     }
 }
 
-fn get_boards(lines: Vec<&str>) -> Vec<BingoBoard> {
+fn get_boards(lines: &[&str]) -> Vec<BingoBoard> {
     let mut boards: Vec<BingoBoard> = Vec::new();
     for i in (1..lines.len()-1).step_by(6) {
         let items = lines[i..i+6].to_vec();
-        let new_board = BingoBoard::new(items);
+        let new_board = BingoBoard::new(&items);
         boards.push(new_board);
     }
     boards
@@ -78,8 +77,8 @@ fn get_boards(lines: Vec<&str>) -> Vec<BingoBoard> {
 // to get a winning board
 pub fn part1(input: String) {
     let lines = input.split("\n").collect::<Vec<_>>();
-    let feed = to_num_arr_with_split(lines[0].to_string(), ',');
-    let mut boards = get_boards(lines);
+    let feed = to_num_arr_with_split(lines[0], ',');
+    let mut boards = get_boards(&lines);
 
     for n in feed {
         for b in boards.iter_mut() {
@@ -97,8 +96,8 @@ pub fn part1(input: String) {
 // to win the game
 pub fn part2(input: String) {
     let lines = input.split("\n").collect::<Vec<_>>();
-    let feed = to_num_arr_with_split(lines[0].to_string(), ',');
-    let mut boards = get_boards(lines);
+    let feed = to_num_arr_with_split(lines[0], ',');
+    let mut boards = get_boards(&lines);
 
     for n in feed {
         let mut remove_indices: Vec<usize> = Vec::new();
