@@ -61,7 +61,12 @@ fn main() {
     let cwd = env::current_dir().unwrap();
     let filename = cwd.join("inputs").join(format!("day{:02}.txt", day_num));
     println!("Reading {}", filename.display());
-    let input = fs::read_to_string(filename).expect("Error while reading");
+    let raw_input = fs::read_to_string(filename).expect("Error while reading");
+    // If the file ends with a new line, get rid of it
+    let input: String = match raw_input.strip_suffix('\n') {
+        Some(x) => x.to_string(),
+        _ => raw_input,
+    };
 
     // Get corresponding function
     let to_run = get_day(day_num);
